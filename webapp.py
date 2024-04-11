@@ -14,34 +14,26 @@ def render_page1():
 def render_page2():
     return render_template('page2.html')
     
-@app.route('/')
-def home():
-    years = get_year_options()
-    #print(years)
-    return render_template('page1.html', year_options=years)
-    
-@app.route('/showFact')
+@app.route('/HighestSalarys')
 def render_fact():
     years = get_year_options()
-    year = request.args.get('Year')
+    #print(years)
+    year = request.args.get('year')
     return render_template('page1.html', year_options=years)
     
 def get_year_options():
     with open('graduates.json') as graduates_data:
-        major = json.load(graduates_data)
+        salaries = json.load(graduates_data)
     years=[]
-    for c in major:
+    for c in salaries:
         if c["Year"] not in years:
-            year.append(c["Year"])
+            years.append(c["Year"])
     options=""
     for s in years:
         options += Markup("<option value=\"" + s + "\">" + s + "</option>") #Use Markup so <, >, " are not escaped lt, gt, etc.
     return options
        
 def is_localhost():
-    """ Determines if app is running on localhost or not
-    Adapted from: https://stackoverflow.com/questions/17077863/how-to-see-if-a-flask-app-is-being-run-on-localhost
-    """
     root_url = request.url_root
     developer_url = 'http://127.0.0.1:5000/'
     return root_url == developer_url
