@@ -14,7 +14,7 @@ def render_page1():
 def render_page2():
     return render_template('page2.html')
     
-@app.route('/HighestSalarys')
+@app.route('/HighestSalaries')
 def render_fact():
     years = get_year_options()
     #print(years)
@@ -25,14 +25,10 @@ def get_year_options():
     with open('graduates.json') as graduates_data:
         salaries = json.load(graduates_data)
     years=[]
-    for c in salaries:
-        if c["Year"] not in years:
-            years.append(c["Year"])
     options=""
-    for s in years:
-        options += Markup("<option value=\"" + s + "\">" + s + "</option>") #Use Markup so <, >, " are not escaped lt, gt, etc.
     return options
-       
+    
+
 def is_localhost():
     root_url = request.url_root
     developer_url = 'http://127.0.0.1:5000/'
