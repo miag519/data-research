@@ -7,8 +7,24 @@
 {% block content %}
     <!--page content-->
     <h1 class="container mt-3">Employment status</h1>
-	
-	window.onload = function () {
+<html>
+<head>
+
+<br/><!-- Just so that JSFiddle's Result label doesn't overlap the Chart -->
+<div id="chartContainer" style="height: 360px; width: 100%;"></div>
+
+<div>Chart Type:
+  <select id="chartType" name="Chart Type">
+    <option value="column">Column</option>
+    <option value="bar">Bar</option>
+    <option value="pie">Pie</option>
+    <option value="doughnut">Doughnut</option>
+  </select>  
+</div>
+
+<script type="text/javascript">
+
+window.onload = function () {
 
 var chart = new CanvasJS.Chart("chartContainer", {
 	exportEnabled: true,
@@ -20,10 +36,12 @@ var chart = new CanvasJS.Chart("chartContainer", {
 		text: "status"
 	}], 
 	axisX: {
-		title: "employment type"
+		title: "employment type",
+		titleFontStyle: "italic"
 	},
 	axisY: {
-		title: "Amount of people",
+		title: "Amount of employees",
+		titleFontStyle: "italic",
 		titleFontColor: "#4F81BC",
 		lineColor: "#4F81BC",
 		labelFontColor: "#4F81BC",
@@ -32,14 +50,10 @@ var chart = new CanvasJS.Chart("chartContainer", {
 	toolTip: {
 		shared: true
 	},
-	legend: {
-		cursor: "pointer",
-		itemclick: toggleDataSeries
-	},
 	data: [{
 		type: "column",
 		name: "people",
-		showInLegend: true,      
+		showInLegend: false,      
 		yValueFormatString: "#,##0.#",
 		dataPoints: [
 			{ label: "Buisness/Industrial",  y: 669270 },
@@ -49,6 +63,12 @@ var chart = new CanvasJS.Chart("chartContainer", {
 	}]
 });
 chart.render();
+
+var chartType = document.getElementById('chartType');
+chartType.addEventListener( "change",  function(){
+  chart.options.data[0].type = chartType.options[chartType.selectedIndex].value;
+  chart.render();
+});
 
 function toggleDataSeries(e) {
 	if (typeof (e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
@@ -60,7 +80,12 @@ function toggleDataSeries(e) {
 }
 
 }
-	<div id="chartContainer" style="height: 300px; width: 100%;"></div>
-    <script src="https://cdn.canvasjs.com/canvasjs.min.js"></script>
+</script>
+</head>
+<body>
+<div id="chartContainer" style="height: 300px; width: 100%;"></div>
+<script src="https://cdn.canvasjs.com/canvasjs.min.js"></script>
+</body>
+</html>
 	
 {% endblock %}
