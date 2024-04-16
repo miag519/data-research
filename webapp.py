@@ -25,9 +25,19 @@ def get_year_options():
     with open('graduates.json') as graduates_data:
         salaries = json.load(graduates_data)
     years=[]
+    for c in salaries:
+        if c["Year"] not in years:
+            years.append(c["Year"])
     options=""
+    for s in years:
+        options += Markup("<option value=\"" + s + "\">" + s + "</option>") #Use Markup so <, >, " are not escaped lt, gt, etc.
     return options
     
+"""@app.route('/buisness')
+def render_fact():
+    
+    employment = request.args.get('employment')
+    return render_template('page2.html')"""
 
 def is_localhost():
     root_url = request.url_root
