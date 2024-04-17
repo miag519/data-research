@@ -1,6 +1,11 @@
 from flask import Flask, url_for, render_template
+from markupsafe import Markup
 
-app = Flask(__name__) #__name__ = "__main__" if this is the file that was run.  Otherwise, it is the name of the file (ex. webapp)
+import os
+import json
+
+
+app = Flask(__name__)
 
 @app.route("/")
 def render_main():
@@ -13,31 +18,31 @@ def render_page1():
 @app.route("/p2")
 def render_page2():
     return render_template('page2.html')
-    
-@app.route('/HighestSalaries')
-def render_fact():
-    years = get_year_options()
+
+@app.route('/p1')
+def home():
+    majors = get_majors_options()
     #print(years)
-    year = request.args.get('year')
-    return render_template('page1.html', year_options=years)
+    return render_template('page1.html', major_options=majors)
+
+@app.route('/Major')
+def render_fact():
+    majors = get_major_options()
+    return render_template('page1.html', major_options=majors)
     
-def get_year_options():
+def get_major_options():
     with open('graduates.json') as graduates_data:
-        salaries = json.load(graduates_data)
-    years=[]
-    for c in salaries:
-        if c["Year"] not in years:
-            years.append(c["Year"])
+        majors = json.load(graduates_data)
+    major=[]
+    for c in majors:
+        if c["Major"] not in major:
+            majors.append(c["Major"])
     options=""
-    for s in years:
+    for s in major:
         options += Markup("<option value=\"" + s + "\">" + s + "</option>") #Use Markup so <, >, " are not escaped lt, gt, etc.
     return options
     
-"""@app.route('/buisness')
-def render_fact():
     
-    employment = request.args.get('employment')
-    return render_template('page2.html')"""
 
 def is_localhost():
     root_url = request.url_root
