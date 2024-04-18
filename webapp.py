@@ -19,28 +19,31 @@ def render_page1():
 def render_page2():
     return render_template('page2.html')
 
-@app.route('/p1')
+"""@app.route('/majors')
 def home():
     majors = get_majors_options()
     #print(years)
-    return render_template('page1.html', major_options=majors)
+    return render_template('page1.html', major_options=majors)"""
 
-@app.route('/Major')
-def render_fact():
-    majors = get_major_options()
-    return render_template('page1.html', major_options=majors)
+@app.route('/highestSalaries')
+def render_highest_sal():
+    with open('graduates.json') as salaries_data:
+        data = json.load(salaries_data)
+    year = request.args['year']   
+    major = "Chemistry"
+    sal = 0
+    for s in data:
+        if s["Year"] == year and s["Salaries"] > sal:
+            sal = s["Salaries"]
+            state = s["major"]
+    return render_template('page1.html', major = major)
+
     
-def get_major_options():
-    with open('graduates.json') as graduates_data:
-        majors = json.load(graduates_data)
-    major=[]
-    for c in majors:
-        if c["Major"] not in major:
-            majors.append(c["Major"])
+"""def get_major_options():
+    with open('graduates.json'):
+        json.load('graduates.json')
     options=""
-    for s in major:
-        options += Markup("<option value=\"" + s + "\">" + s + "</option>") #Use Markup so <, >, " are not escaped lt, gt, etc.
-    return options
+    return options"""
     
     
 
